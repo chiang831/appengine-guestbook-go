@@ -84,7 +84,7 @@ var guestbookTemplate = template.Must(template.New("book").Parse(`
 func sign(w http.ResponseWriter, r *http.Request) {
         // [START new_context]
         c := appengine.NewContext(r)
-        // [END new_context]        
+        // [END new_context]
         g := Greeting{
                 Content: r.FormValue("content"),
                 Date:    time.Now(),
