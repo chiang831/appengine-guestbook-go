@@ -2,6 +2,8 @@ package guestbook
 
 import (
         "html/template"
+        "github.com/golang/glog"
+        "flag"
         "net/http"
         "time"
 
@@ -19,6 +21,9 @@ type Greeting struct {
 // [END greeting_struct]
 
 func init() {
+        flag.Parse()
+        flag.Lookup("logtostderr").Value.Set("true")
+        glog.Info("Init")
         http.HandleFunc("/", root)
         http.HandleFunc("/sign", sign)
 }
@@ -87,6 +92,8 @@ func sign(w http.ResponseWriter, r *http.Request) {
         // [START if_user]
         if u := user.Current(c); u != nil {
                 g.Author = u.String()
+                glog.Infof("User %v, email %v id %v signed", g.Author, u.Email, u.ClientID)
+                glog.Flush()
         }
         // We set the same parent key on every Greeting entity to ensure each Greeting
         // is in the same entity group. Queries across the single entity group
